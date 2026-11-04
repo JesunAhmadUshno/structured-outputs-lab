@@ -1,0 +1,408 @@
+{
+  "documents": 16,
+  "per_document": [
+    {
+      "actual": "accept",
+      "defect": null,
+      "doc_type": "invoice",
+      "errors": [],
+      "expected": "accept",
+      "expected_first_error_path": null,
+      "fields_correct": 5,
+      "fields_total": 5,
+      "first_error_path": null,
+      "id": "d01-invoice-valid",
+      "match": true,
+      "record": {
+        "date": "2026-10-02",
+        "invoice_id": "INV-1001",
+        "items_count": 4,
+        "total_cad": 249.5,
+        "vendor": "Northlight Supplies"
+      }
+    },
+    {
+      "actual": "accept",
+      "defect": null,
+      "doc_type": "invoice",
+      "errors": [],
+      "expected": "accept",
+      "expected_first_error_path": null,
+      "fields_correct": 5,
+      "fields_total": 5,
+      "first_error_path": null,
+      "id": "d02-invoice-valid",
+      "match": true,
+      "record": {
+        "date": "2026-10-05",
+        "invoice_id": "INV-1002",
+        "items_count": 2,
+        "total_cad": 89.99,
+        "vendor": "Paper Trail Office Co"
+      }
+    },
+    {
+      "actual": "accept",
+      "defect": null,
+      "doc_type": "meeting_note",
+      "errors": [],
+      "expected": "accept",
+      "expected_first_error_path": null,
+      "fields_correct": 5,
+      "fields_total": 5,
+      "first_error_path": null,
+      "id": "d03-meeting-valid",
+      "match": true,
+      "record": {
+        "attendees": [
+          "Ana",
+          "Ben",
+          "Cara"
+        ],
+        "date": "2026-10-03",
+        "duration_minutes": 60,
+        "meeting_id": "MTG-2001",
+        "title": "Sprint Planning"
+      }
+    },
+    {
+      "actual": "accept",
+      "defect": null,
+      "doc_type": "meeting_note",
+      "errors": [],
+      "expected": "accept",
+      "expected_first_error_path": null,
+      "fields_correct": 5,
+      "fields_total": 5,
+      "first_error_path": null,
+      "id": "d04-meeting-valid",
+      "match": true,
+      "record": {
+        "attendees": [
+          "Dev",
+          "Eli"
+        ],
+        "date": "2026-10-06",
+        "duration_minutes": 45,
+        "meeting_id": "MTG-2002",
+        "title": "Vendor Review"
+      }
+    },
+    {
+      "actual": "accept",
+      "defect": null,
+      "doc_type": "product_listing",
+      "errors": [],
+      "expected": "accept",
+      "expected_first_error_path": null,
+      "fields_correct": 5,
+      "fields_total": 5,
+      "first_error_path": null,
+      "id": "d05-product-valid",
+      "match": true,
+      "record": {
+        "category": "tools",
+        "name": "Steel Hammer",
+        "price_cad": 24.99,
+        "sku": "SKU-3001",
+        "stock": 140
+      }
+    },
+    {
+      "actual": "accept",
+      "defect": null,
+      "doc_type": "product_listing",
+      "errors": [],
+      "expected": "accept",
+      "expected_first_error_path": null,
+      "fields_correct": 5,
+      "fields_total": 5,
+      "first_error_path": null,
+      "id": "d06-product-valid",
+      "match": true,
+      "record": {
+        "category": "kitchen",
+        "name": "Ceramic Mug Set",
+        "price_cad": 39.5,
+        "sku": "SKU-3002",
+        "stock": 65
+      }
+    },
+    {
+      "actual": "accept",
+      "defect": null,
+      "doc_type": "invoice",
+      "errors": [],
+      "expected": "accept",
+      "expected_first_error_path": null,
+      "fields_correct": 5,
+      "fields_total": 5,
+      "first_error_path": null,
+      "id": "d07-invoice-valid",
+      "match": true,
+      "record": {
+        "date": "2026-10-09",
+        "invoice_id": "INV-1003",
+        "items_count": 12,
+        "total_cad": 1200.0,
+        "vendor": "Harbour Print Works"
+      }
+    },
+    {
+      "actual": "accept",
+      "defect": null,
+      "doc_type": "meeting_note",
+      "errors": [],
+      "expected": "accept",
+      "expected_first_error_path": null,
+      "fields_correct": 5,
+      "fields_total": 5,
+      "first_error_path": null,
+      "id": "d08-meeting-valid",
+      "match": true,
+      "record": {
+        "attendees": [
+          "Ana",
+          "Farah",
+          "Dev",
+          "Eli"
+        ],
+        "date": "2026-10-10",
+        "duration_minutes": 90,
+        "meeting_id": "MTG-2003",
+        "title": "Hiring Debrief"
+      }
+    },
+    {
+      "actual": "reject",
+      "defect": "missing field",
+      "doc_type": "invoice",
+      "errors": [
+        {
+          "code": "required",
+          "message": "$.vendor: required field is missing",
+          "path": "$.vendor"
+        }
+      ],
+      "expected": "reject",
+      "expected_first_error_path": "$.vendor",
+      "fields_correct": null,
+      "fields_total": null,
+      "first_error_path": "$.vendor",
+      "id": "d09-invoice-missing-vendor",
+      "match": true,
+      "record": {
+        "date": "2026-10-11",
+        "invoice_id": "INV-1004",
+        "items_count": 3,
+        "total_cad": 150.0
+      }
+    },
+    {
+      "actual": "reject",
+      "defect": "wrong type",
+      "doc_type": "invoice",
+      "errors": [
+        {
+          "code": "type",
+          "message": "$.total_cad: expected number, got string",
+          "path": "$.total_cad"
+        }
+      ],
+      "expected": "reject",
+      "expected_first_error_path": "$.total_cad",
+      "fields_correct": null,
+      "fields_total": null,
+      "first_error_path": "$.total_cad",
+      "id": "d10-invoice-bad-total-type",
+      "match": true,
+      "record": {
+        "date": "2026-10-12",
+        "invoice_id": "INV-1005",
+        "items_count": 1,
+        "total_cad": "FREE",
+        "vendor": "Northlight Supplies"
+      }
+    },
+    {
+      "actual": "reject",
+      "defect": "extra field",
+      "doc_type": "invoice",
+      "errors": [
+        {
+          "code": "additional",
+          "message": "$.discount: additional field is not allowed in strict mode",
+          "path": "$.discount"
+        }
+      ],
+      "expected": "reject",
+      "expected_first_error_path": "$.discount",
+      "fields_correct": null,
+      "fields_total": null,
+      "first_error_path": "$.discount",
+      "id": "d11-invoice-extra-field",
+      "match": true,
+      "record": {
+        "date": "2026-10-13",
+        "discount": 5.0,
+        "invoice_id": "INV-1006",
+        "items_count": 2,
+        "total_cad": 75.25,
+        "vendor": "Paper Trail Office Co"
+      }
+    },
+    {
+      "actual": "reject",
+      "defect": "out-of-range value",
+      "doc_type": "invoice",
+      "errors": [
+        {
+          "code": "maximum",
+          "message": "$.total_cad: 250000.0 is above maximum 100000",
+          "path": "$.total_cad"
+        }
+      ],
+      "expected": "reject",
+      "expected_first_error_path": "$.total_cad",
+      "fields_correct": null,
+      "fields_total": null,
+      "first_error_path": "$.total_cad",
+      "id": "d12-invoice-total-out-of-range",
+      "match": true,
+      "record": {
+        "date": "2026-10-14",
+        "invoice_id": "INV-1007",
+        "items_count": 5,
+        "total_cad": 250000.0,
+        "vendor": "Harbour Print Works"
+      }
+    },
+    {
+      "actual": "reject",
+      "defect": "missing field",
+      "doc_type": "meeting_note",
+      "errors": [
+        {
+          "code": "required",
+          "message": "$.title: required field is missing",
+          "path": "$.title"
+        }
+      ],
+      "expected": "reject",
+      "expected_first_error_path": "$.title",
+      "fields_correct": null,
+      "fields_total": null,
+      "first_error_path": "$.title",
+      "id": "d13-meeting-missing-title",
+      "match": true,
+      "record": {
+        "attendees": [
+          "Ana",
+          "Ben"
+        ],
+        "date": "2026-10-15",
+        "duration_minutes": 30,
+        "meeting_id": "MTG-2004"
+      }
+    },
+    {
+      "actual": "reject",
+      "defect": "out-of-range value",
+      "doc_type": "meeting_note",
+      "errors": [
+        {
+          "code": "maximum",
+          "message": "$.duration_minutes: 900 is above maximum 480",
+          "path": "$.duration_minutes"
+        }
+      ],
+      "expected": "reject",
+      "expected_first_error_path": "$.duration_minutes",
+      "fields_correct": null,
+      "fields_total": null,
+      "first_error_path": "$.duration_minutes",
+      "id": "d14-meeting-duration-out-of-range",
+      "match": true,
+      "record": {
+        "attendees": [
+          "Ana",
+          "Ben",
+          "Cara"
+        ],
+        "date": "2026-10-16",
+        "duration_minutes": 900,
+        "meeting_id": "MTG-2005",
+        "title": "All Hands"
+      }
+    },
+    {
+      "actual": "reject",
+      "defect": "wrong type",
+      "doc_type": "product_listing",
+      "errors": [
+        {
+          "code": "type",
+          "message": "$.stock: expected integer, got string",
+          "path": "$.stock"
+        }
+      ],
+      "expected": "reject",
+      "expected_first_error_path": "$.stock",
+      "fields_correct": null,
+      "fields_total": null,
+      "first_error_path": "$.stock",
+      "id": "d15-product-bad-stock-type",
+      "match": true,
+      "record": {
+        "category": "office",
+        "name": "Desk Lamp",
+        "price_cad": 54.0,
+        "sku": "SKU-3003",
+        "stock": "many"
+      }
+    },
+    {
+      "actual": "reject",
+      "defect": "invalid enum value",
+      "doc_type": "product_listing",
+      "errors": [
+        {
+          "code": "enum",
+          "message": "$.category: 'toys' is not one of ['tools', 'kitchen', 'office', 'outdoor']",
+          "path": "$.category"
+        }
+      ],
+      "expected": "reject",
+      "expected_first_error_path": "$.category",
+      "fields_correct": null,
+      "fields_total": null,
+      "first_error_path": "$.category",
+      "id": "d16-product-bad-category",
+      "match": true,
+      "record": {
+        "category": "toys",
+        "name": "Plush Toy",
+        "price_cad": 19.99,
+        "sku": "SKU-3004",
+        "stock": 200
+      }
+    }
+  ],
+  "summary": {
+    "accepted": 8,
+    "extraction_accuracy": 1.0,
+    "false_accepts": 0,
+    "fields_correct": 40,
+    "fields_total": 40,
+    "malformed_caught": 8,
+    "malformed_total": 8,
+    "matched": 16,
+    "rejected": 8,
+    "validation_catch_rate": 1.0
+  },
+  "types": [
+    "invoice",
+    "meeting_note",
+    "product_listing"
+  ]
+}
