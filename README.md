@@ -2,7 +2,10 @@
 
 Reliable LLM applications: strict schemas, validated extraction, a self-healing parse loop.
 
-Status: SCAFFOLD (Wave 0, ROADMAP-V3-BATCH, 2026-11-04). Scaffold is not built. No results exist yet.
+Status: LEARN DONE 2026-11-04 (ROADMAP-V3-BATCH, Sprint 1).
+Level 1 code runs with 16 passing unit tests and one measured case
+run (10 of 10 cases matched expectation, below). Build and Deep are
+not started. The Wave 0 scaffold claim is superseded by this line.
 Project: P14. Fleet node: BlackBoxV3. Wave: Wave 2.
 
 ## Start here
@@ -22,7 +25,7 @@ Project: P14. Fleet node: BlackBoxV3. Wave: Wave 2.
 
 | Test | Result |
 | --- | --- |
-| NO RESULTS YET | No measurement has run. This table fills only with measured numbers, with method. |
+| Level 1 case run, 10 model-style function calls against strict schemas (method: level-1-learn/README.md), 2026-11-04 | 10 of 10 cases matched expectation: 4 valid calls dispatched (get_weather 2, create_calendar_event 1, score_keywords 1), 6 invalid calls rejected before dispatch, each at its designed error path ($.unit, $.date twice, $.room, $.keywords[1], $). Unit tests: 16 run, 16 passed. |
 
 ## Novelty
 
