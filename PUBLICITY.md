@@ -11,7 +11,7 @@ posts to social.
 
 | Channel | Date | Outcome |
 | --- | --- | --- |
-| GitHub release v1.0 | 2026-11-04 | PENDING: release is created at the end of this cycle; the URL is filled in here in the same commit sequence once the release exists. |
+| GitHub release v1.0 | 2026-11-04 | DONE: https://github.com/JesunAhmadUshno/structured-outputs-lab/releases/tag/v1.0 |
 | Blog post | 2026-11-04 | HELD: written fan-out set is the next cycle step. |
 | Tutorial | 2026-11-04 | HELD: written fan-out set is the next cycle step. |
 | Website page copy | 2026-11-04 | HELD: written fan-out set is the next cycle step. |
