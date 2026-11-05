@@ -1,0 +1,419 @@
+{
+  "attempted_from_build_rejections": 8,
+  "build_accepted_checked": 8,
+  "per_defect_class": {
+    "bad_enum": {
+      "attempted": 1,
+      "healed": 0,
+      "healed_flagged": 0,
+      "silent_failures": 0
+    },
+    "extra_field": {
+      "attempted": 1,
+      "healed": 1,
+      "healed_flagged": 0,
+      "silent_failures": 0
+    },
+    "missing": {
+      "attempted": 2,
+      "healed": 0,
+      "healed_flagged": 0,
+      "silent_failures": 0
+    },
+    "out_of_range": {
+      "attempted": 2,
+      "healed": 2,
+      "healed_flagged": 2,
+      "silent_failures": 2
+    },
+    "wrong_type": {
+      "attempted": 2,
+      "healed": 0,
+      "healed_flagged": 0,
+      "silent_failures": 0
+    }
+  },
+  "per_document": [
+    {
+      "defect_class": "missing",
+      "doc_type": "invoice",
+      "expected_flagged": false,
+      "expected_healed": false,
+      "final_errors": [
+        {
+          "code": "required",
+          "message": "$.vendor: required field is missing",
+          "path": "$.vendor"
+        }
+      ],
+      "final_record": {
+        "date": "2026-10-11",
+        "invoice_id": "INV-1004",
+        "items_count": 3,
+        "total_cad": 150.0
+      },
+      "flagged": false,
+      "healed": false,
+      "id": "d09-invoice-missing-vendor",
+      "match": true,
+      "original_record": {
+        "date": "2026-10-11",
+        "invoice_id": "INV-1004",
+        "items_count": 3,
+        "total_cad": 150.0
+      },
+      "repair_log": [
+        {
+          "after": null,
+          "before": null,
+          "code": "required",
+          "doc_id": "d09-invoice-missing-vendor",
+          "outcome": "unrepairable",
+          "path": "$.vendor",
+          "round": 1,
+          "rule": "none_unrepairable",
+          "value_changing": false
+        }
+      ],
+      "rounds": 1,
+      "silent_failure": null,
+      "status": "still_rejected"
+    },
+    {
+      "defect_class": "wrong_type",
+      "doc_type": "invoice",
+      "expected_flagged": false,
+      "expected_healed": false,
+      "final_errors": [
+        {
+          "code": "type",
+          "message": "$.total_cad: expected number, got string",
+          "path": "$.total_cad"
+        }
+      ],
+      "final_record": {
+        "date": "2026-10-12",
+        "invoice_id": "INV-1005",
+        "items_count": 1,
+        "total_cad": "FREE",
+        "vendor": "Northlight Supplies"
+      },
+      "flagged": false,
+      "healed": false,
+      "id": "d10-invoice-bad-total-type",
+      "match": true,
+      "original_record": {
+        "date": "2026-10-12",
+        "invoice_id": "INV-1005",
+        "items_count": 1,
+        "total_cad": "FREE",
+        "vendor": "Northlight Supplies"
+      },
+      "repair_log": [
+        {
+          "after": "FREE",
+          "before": "FREE",
+          "code": "type",
+          "doc_id": "d10-invoice-bad-total-type",
+          "outcome": "unrepairable",
+          "path": "$.total_cad",
+          "round": 1,
+          "rule": "none_unrepairable",
+          "value_changing": false
+        }
+      ],
+      "rounds": 1,
+      "silent_failure": null,
+      "status": "still_rejected"
+    },
+    {
+      "defect_class": "extra_field",
+      "doc_type": "invoice",
+      "expected_flagged": false,
+      "expected_healed": true,
+      "final_errors": [],
+      "final_record": {
+        "date": "2026-10-13",
+        "invoice_id": "INV-1006",
+        "items_count": 2,
+        "total_cad": 75.25,
+        "vendor": "Paper Trail Office Co"
+      },
+      "flagged": false,
+      "healed": true,
+      "id": "d11-invoice-extra-field",
+      "match": true,
+      "original_record": {
+        "date": "2026-10-13",
+        "discount": 5.0,
+        "invoice_id": "INV-1006",
+        "items_count": 2,
+        "total_cad": 75.25,
+        "vendor": "Paper Trail Office Co"
+      },
+      "repair_log": [
+        {
+          "after": null,
+          "before": 5.0,
+          "code": "additional",
+          "doc_id": "d11-invoice-extra-field",
+          "outcome": "applied",
+          "path": "$.discount",
+          "round": 1,
+          "rule": "drop_additional_field",
+          "value_changing": false
+        }
+      ],
+      "rounds": 2,
+      "silent_failure": false,
+      "status": "healed_clean"
+    },
+    {
+      "defect_class": "out_of_range",
+      "doc_type": "invoice",
+      "expected_flagged": true,
+      "expected_healed": true,
+      "final_errors": [],
+      "final_record": {
+        "date": "2026-10-14",
+        "invoice_id": "INV-1007",
+        "items_count": 5,
+        "total_cad": 100000,
+        "vendor": "Harbour Print Works"
+      },
+      "flagged": true,
+      "healed": true,
+      "id": "d12-invoice-total-out-of-range",
+      "match": true,
+      "original_record": {
+        "date": "2026-10-14",
+        "invoice_id": "INV-1007",
+        "items_count": 5,
+        "total_cad": 250000.0,
+        "vendor": "Harbour Print Works"
+      },
+      "repair_log": [
+        {
+          "after": 100000,
+          "before": 250000.0,
+          "code": "maximum",
+          "doc_id": "d12-invoice-total-out-of-range",
+          "outcome": "applied_value_changing",
+          "path": "$.total_cad",
+          "round": 1,
+          "rule": "clamp_to_range",
+          "value_changing": true
+        }
+      ],
+      "rounds": 2,
+      "silent_failure": true,
+      "status": "healed_flagged"
+    },
+    {
+      "defect_class": "missing",
+      "doc_type": "meeting_note",
+      "expected_flagged": false,
+      "expected_healed": false,
+      "final_errors": [
+        {
+          "code": "required",
+          "message": "$.title: required field is missing",
+          "path": "$.title"
+        }
+      ],
+      "final_record": {
+        "attendees": [
+          "Ana",
+          "Ben"
+        ],
+        "date": "2026-10-15",
+        "duration_minutes": 30,
+        "meeting_id": "MTG-2004"
+      },
+      "flagged": false,
+      "healed": false,
+      "id": "d13-meeting-missing-title",
+      "match": true,
+      "original_record": {
+        "attendees": [
+          "Ana",
+          "Ben"
+        ],
+        "date": "2026-10-15",
+        "duration_minutes": 30,
+        "meeting_id": "MTG-2004"
+      },
+      "repair_log": [
+        {
+          "after": null,
+          "before": null,
+          "code": "required",
+          "doc_id": "d13-meeting-missing-title",
+          "outcome": "unrepairable",
+          "path": "$.title",
+          "round": 1,
+          "rule": "none_unrepairable",
+          "value_changing": false
+        }
+      ],
+      "rounds": 1,
+      "silent_failure": null,
+      "status": "still_rejected"
+    },
+    {
+      "defect_class": "out_of_range",
+      "doc_type": "meeting_note",
+      "expected_flagged": true,
+      "expected_healed": true,
+      "final_errors": [],
+      "final_record": {
+        "attendees": [
+          "Ana",
+          "Ben",
+          "Cara"
+        ],
+        "date": "2026-10-16",
+        "duration_minutes": 480,
+        "meeting_id": "MTG-2005",
+        "title": "All Hands"
+      },
+      "flagged": true,
+      "healed": true,
+      "id": "d14-meeting-duration-out-of-range",
+      "match": true,
+      "original_record": {
+        "attendees": [
+          "Ana",
+          "Ben",
+          "Cara"
+        ],
+        "date": "2026-10-16",
+        "duration_minutes": 900,
+        "meeting_id": "MTG-2005",
+        "title": "All Hands"
+      },
+      "repair_log": [
+        {
+          "after": 480,
+          "before": 900,
+          "code": "maximum",
+          "doc_id": "d14-meeting-duration-out-of-range",
+          "outcome": "applied_value_changing",
+          "path": "$.duration_minutes",
+          "round": 1,
+          "rule": "clamp_to_range",
+          "value_changing": true
+        }
+      ],
+      "rounds": 2,
+      "silent_failure": true,
+      "status": "healed_flagged"
+    },
+    {
+      "defect_class": "wrong_type",
+      "doc_type": "product_listing",
+      "expected_flagged": false,
+      "expected_healed": false,
+      "final_errors": [
+        {
+          "code": "type",
+          "message": "$.stock: expected integer, got string",
+          "path": "$.stock"
+        }
+      ],
+      "final_record": {
+        "category": "office",
+        "name": "Desk Lamp",
+        "price_cad": 54.0,
+        "sku": "SKU-3003",
+        "stock": "many"
+      },
+      "flagged": false,
+      "healed": false,
+      "id": "d15-product-bad-stock-type",
+      "match": true,
+      "original_record": {
+        "category": "office",
+        "name": "Desk Lamp",
+        "price_cad": 54.0,
+        "sku": "SKU-3003",
+        "stock": "many"
+      },
+      "repair_log": [
+        {
+          "after": "many",
+          "before": "many",
+          "code": "type",
+          "doc_id": "d15-product-bad-stock-type",
+          "outcome": "unrepairable",
+          "path": "$.stock",
+          "round": 1,
+          "rule": "none_unrepairable",
+          "value_changing": false
+        }
+      ],
+      "rounds": 1,
+      "silent_failure": null,
+      "status": "still_rejected"
+    },
+    {
+      "defect_class": "bad_enum",
+      "doc_type": "product_listing",
+      "expected_flagged": false,
+      "expected_healed": false,
+      "final_errors": [
+        {
+          "code": "enum",
+          "message": "$.category: 'toys' is not one of ['tools', 'kitchen', 'office', 'outdoor']",
+          "path": "$.category"
+        }
+      ],
+      "final_record": {
+        "category": "toys",
+        "name": "Plush Toy",
+        "price_cad": 19.99,
+        "sku": "SKU-3004",
+        "stock": 200
+      },
+      "flagged": false,
+      "healed": false,
+      "id": "d16-product-bad-category",
+      "match": true,
+      "original_record": {
+        "category": "toys",
+        "name": "Plush Toy",
+        "price_cad": 19.99,
+        "sku": "SKU-3004",
+        "stock": 200
+      },
+      "repair_log": [
+        {
+          "after": "toys",
+          "before": "toys",
+          "code": "enum",
+          "doc_id": "d16-product-bad-category",
+          "outcome": "unrepairable",
+          "path": "$.category",
+          "round": 1,
+          "rule": "none_unrepairable",
+          "value_changing": false
+        }
+      ],
+      "rounds": 1,
+      "silent_failure": null,
+      "status": "still_rejected"
+    }
+  ],
+  "summary": {
+    "attempted": 8,
+    "healed": 3,
+    "healed_clean": 1,
+    "healed_flagged": 2,
+    "matched": 8,
+    "repair_rate": 0.375,
+    "silent_failure_rate": 0.667,
+    "silent_failures": 2,
+    "still_rejected": 5,
+    "valid_records_altered": 0
+  }
+}
