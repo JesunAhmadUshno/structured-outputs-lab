@@ -42,8 +42,8 @@ sys.path.insert(0, HERE)
 sys.path.insert(0, os.path.join(ROOT, "level-2-build"))
 
 from corpus import DOCUMENTS  # noqa: E402
-from pipeline import run_pipeline  # noqa: E402
 from heal import heal_rejected  # noqa: E402
+from pipeline import run_pipeline  # noqa: E402
 
 DEFECT_CLASSES = ["missing", "wrong_type", "extra_field", "out_of_range", "bad_enum"]
 

@@ -30,7 +30,6 @@ _LEARN = os.path.join(os.path.dirname(_HERE), "level-1-learn")
 sys.path.insert(0, _LEARN)
 from schema_validate import validate  # noqa: E402
 
-
 # ---------------------------------------------------------------------------
 # Strict schemas, one per type. Field order here is the order the
 # validator reports property errors in.
