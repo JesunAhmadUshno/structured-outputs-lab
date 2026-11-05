@@ -36,6 +36,22 @@ Project: P14. Fleet node: BlackBoxV3. Wave: Wave 2.
 | Level 2 pipeline run, 16 synthetic documents in 3 types against strict schemas (method: level-2-build/README.md), 2026-11-04 | 16 of 16 documents matched expectation: 8 accepted, 8 rejected. Extraction accuracy 1.000 (40 of 40 fields on expected-accept documents), validation catch rate 1.000 (8 of 8 malformed documents rejected at their designed first error paths), 0 false accepts. Unit tests: 18 Build run, 18 passed; 34 total with Learn. |
 | Level 3 healing run, the 8 Build rejections against a labelled expected healed outcome set (method: level-3-deep/README.md), 2026-11-04 | 8 of 8 documents matched the labelled outcome: 3 healed, 5 still rejected. Repair rate 0.375 (3 of 8: 1 clean heal from dropping an additional field, 2 flagged value-changing clamps), silent failure rate 0.667 (2 of 3 healed are clamps whose healed values differ from the values the documents state), 0 of 8 Build-accepted records altered. Unit tests: 21 Deep run, 21 passed; 55 total with Learn and Build. |
 
+## Fan-out
+
+Written fan-out for v1.0 is in fanout/ (2026-11-04), graded in
+PUBLICITY.md:
+
+- fanout/blog-post.md: the full story, with the main results claim.
+- fanout/tutorial.md: course module P14-structured-outputs-lab;
+  every command in it was run and verified.
+- fanout/website-page.md: project page copy only, not published.
+- fanout/linkedin-post.md: draft, not posted, link in the first
+  comment line only.
+- fanout/paper-candidate.md: the self-healing parse reliability
+  note brief; submission is Jesun's tap, nothing submitted.
+- fanout/release-notes.md: draft notes for the existing releases
+  v0.1, v0.5, and v1.0 only.
+
 ## Novelty
 
 PROPOSED. See NOVELTY.md. The novelty text is a draft until the Jev claim_check gate passes on it.
