@@ -35,8 +35,8 @@ _ROOT = os.path.dirname(_HERE)
 sys.path.insert(0, os.path.join(_ROOT, "level-1-learn"))
 sys.path.insert(0, os.path.join(_ROOT, "level-2-build"))
 
-from schema_validate import validate  # noqa: E402
 from pipeline import SCHEMAS  # noqa: E402
+from schema_validate import validate  # noqa: E402
 
 MAX_ROUNDS = 3
 

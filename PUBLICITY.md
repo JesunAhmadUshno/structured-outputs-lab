@@ -71,3 +71,26 @@ shipped ungraded. Mean of the six pieces: 956 of 1000, which is
   exist, so research and gap framing are summary grade (minus 15
   research, minus 15 gap fit); format is repo-bound (minus 15
   reach, minus 2 accuracy, minus 5 clarity).
+
+## Actions polish pack (2026-11-04)
+
+Applied through a pull request on 2026-11-04, following the GitHub
+Actions polish standard for ROADMAP-V3-BATCH. The pack adds: CI on a
+Python 3.11 and 3.12 matrix with a ruff lint step (scope in
+ruff.toml: E, F, I, line length 120), CodeQL scanning, Dependabot
+for pip and GitHub Actions, a release workflow attaching a
+structured-outputs-lab source tarball to v* tag releases, Labeler,
+Greetings, Stale in comment-only mode (days-before-close: -1, it
+never closes), and a docs summary page under docs/ for GitHub
+Pages. All existing CI steps are preserved inside the matrix:
+smoke, Learn tests and case run, Build tests and run, Deep tests
+and healing run. The Greetings workflow uses the snake_case inputs
+that actions/first-interaction@v3 requires (issue_message,
+pr_message, repo_token).
+
+| Channel | Outcome on 2026-11-04 |
+| --- | --- |
+| GitHub Actions polish pack | Applied by pull request in this repo; CI, CodeQL, Dependabot, Release, Labeler, Greetings, and Stale workflows added, plus ruff.toml, requirements.txt, and docs/index.md. |
+| GitHub Pages | Docs page under docs/ prepared for Pages (source main, /docs). Live status is verified with gh after the merge and recorded in the batch ledger, not claimed here ahead of that check. |
+| PyPI publishing | Held: needs a new credential (PyPI token). Jesun's tap only. No credential was created. |
+| Social posting | Held: no social post was made for this pack. Standing platform rules and gates apply; Threads waits for Jesun's tap per post. The loop itself never posts to social. |
