@@ -14,7 +14,6 @@ sys.path.insert(0, os.path.join(ROOT, "level-2-build"))
 sys.path.insert(0, os.path.join(ROOT, "level-1-learn"))
 
 from corpus import DOCUMENTS  # noqa: E402
-from pipeline import INVOICE_SCHEMA, SCHEMAS, run_pipeline  # noqa: E402
 from heal import (  # noqa: E402
     MAX_ROUNDS,
     RULE_CLAMP,
@@ -24,6 +23,7 @@ from heal import (  # noqa: E402
     attempt_heal,
     heal_rejected,
 )
+from pipeline import INVOICE_SCHEMA, SCHEMAS, run_pipeline  # noqa: E402
 from run_deep import evaluate  # noqa: E402
 
 
@@ -236,10 +236,18 @@ class TestBenchmarkNumbers(unittest.TestCase):
     def test_per_defect_class_outcomes(self):
         per_class = evaluate()["per_defect_class"]
         self.assertEqual(per_class["missing"], {"attempted": 2, "healed": 0, "healed_flagged": 0, "silent_failures": 0})
-        self.assertEqual(per_class["wrong_type"], {"attempted": 2, "healed": 0, "healed_flagged": 0, "silent_failures": 0})
-        self.assertEqual(per_class["extra_field"], {"attempted": 1, "healed": 1, "healed_flagged": 0, "silent_failures": 0})
-        self.assertEqual(per_class["out_of_range"], {"attempted": 2, "healed": 2, "healed_flagged": 2, "silent_failures": 2})
-        self.assertEqual(per_class["bad_enum"], {"attempted": 1, "healed": 0, "healed_flagged": 0, "silent_failures": 0})
+        self.assertEqual(
+            per_class["wrong_type"], {"attempted": 2, "healed": 0, "healed_flagged": 0, "silent_failures": 0}
+        )
+        self.assertEqual(
+            per_class["extra_field"], {"attempted": 1, "healed": 1, "healed_flagged": 0, "silent_failures": 0}
+        )
+        self.assertEqual(
+            per_class["out_of_range"], {"attempted": 2, "healed": 2, "healed_flagged": 2, "silent_failures": 2}
+        )
+        self.assertEqual(
+            per_class["bad_enum"], {"attempted": 1, "healed": 0, "healed_flagged": 0, "silent_failures": 0}
+        )
 
     def test_evaluate_is_deterministic(self):
         self.assertEqual(evaluate(), evaluate())
