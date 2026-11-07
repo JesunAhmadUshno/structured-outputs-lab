@@ -30,6 +30,26 @@
       0.9385
     ]
   },
+  "supplement_repair_rate": {
+    "point": 0.6,
+    "source": "level-3-deep/results_supplement.json",
+    "successes": 6,
+    "trials": 10,
+    "wilson95": [
+      0.3127,
+      0.8318
+    ]
+  },
+  "supplement_silent_failure_rate": {
+    "point": 0.3333,
+    "source": "level-3-deep/results_supplement.json",
+    "successes": 2,
+    "trials": 6,
+    "wilson95": [
+      0.0968,
+      0.7
+    ]
+  },
   "validation_catch_rate": {
     "point": 1.0,
     "source": "level-2-build/results_build.json",
