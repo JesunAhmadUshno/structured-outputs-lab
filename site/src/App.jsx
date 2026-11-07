@@ -4,13 +4,14 @@ import corpusSrc from '../../level-2-build/corpus.py?raw';
 import buildRaw from '../../level-2-build/results_build.json?raw';
 import deepRaw from '../../level-3-deep/results_deep.json?raw';
 import evalDeepRaw from '../../level-3-deep/evaluation_deep.json?raw';
+import suppRaw from '../../level-3-deep/supplement.json?raw';
 import unc from '../../level-3-deep/uncertainty.json';
 import readme1 from '../../level-1-learn/README.md?raw';
 import readme2 from '../../level-2-build/README.md?raw';
 import readme3 from '../../level-3-deep/README.md?raw';
 import roadmap from '../../ROADMAP.md?raw';
 import { loads, dumps, pyRepr } from './py.js';
-import { runCase, callFunction, FUNCTIONS, extractAndValidate, parseCorpus, evaluateDeep, wilson, countTests, RULES, MAX_ROUNDS, DEFECT_CLASSES } from './lab.js';
+import { runCase, callFunction, FUNCTIONS, extractAndValidate, parseCorpus, evaluateDeep, evaluateSupplement, wilson, countTests, RULES, MAX_ROUNDS, DEFECT_CLASSES } from './lab.js';
 
 const REPO = 'https://github.com/JesunAhmadUshno/structured-outputs-lab';
 const blob = (p) => `${REPO}/blob/main/${p}`;
@@ -31,6 +32,7 @@ const TEST_FILES = Object.entries(import.meta.glob('../../tests/*.py', { query: 
   .map(([p, src]) => [p.split('/').pop(), countTests(src)]).filter(([, n]) => n > 0);
 const TESTS_TOTAL = TEST_FILES.reduce((a, [, n]) => a + n, 0);
 const RECORDED_RUN = evaluateDeep(DOCS, EVAL_DEEP);
+const SUPP = evaluateSupplement(loads(suppRaw));
 
 // Pulls a "## heading" section's bullet or numbered list out of a markdown file.
 function mdList(md, heading) {
@@ -40,7 +42,7 @@ function mdList(md, heading) {
 const LIMITS = { 'Level 1': mdList(readme1, 'Limits, stated plainly'), 'Level 2': mdList(readme2, 'Limits, stated plainly'), 'Level 3': mdList(readme3, 'Limits, stated plainly') };
 const BACKLOG = mdList(roadmap, 'v1.1 backlog');
 
-const SECTIONS = [['top', 'Overview', '{}'], ['flow', 'Pipeline', '⇢'], ['learn', 'Validator', '✓'], ['build', 'Extraction', '¶'], ['deep', 'Repair loop', '↻'], ['whatif', 'What-if', '⚙'], ['classes', 'Defect classes', '▥'], ['limits', 'Limits', '!'], ['reproduce', 'Reproduce', '❯_']];
+const SECTIONS = [['top', 'Overview', '{}'], ['flow', 'Pipeline', '⇢'], ['learn', 'Validator', '✓'], ['build', 'Extraction', '¶'], ['deep', 'Repair loop', '↻'], ['whatif', 'What-if', '⚙'], ['followup', 'Follow-up set', '+'], ['classes', 'Defect classes', '▥'], ['limits', 'Limits', '!'], ['reproduce', 'Reproduce', '❯_']];
 
 function useReveal() {
   useEffect(() => {
@@ -110,6 +112,7 @@ export default function App() {
       <Build />
       <Deep />
       <WhatIf />
+      <FollowUp />
       <Classes />
       <Limits />
       <Reproduce />
@@ -440,6 +443,45 @@ function WhatIf() {
   );
 }
 
+function FollowUp() {
+  const s = SUPP.summary;
+  const rr = unc.supplement_repair_rate.wilson95, sr = unc.supplement_silent_failure_rate.wilson95;
+  const tone = { healed_clean: 'good', healed_flagged: 'warn', still_rejected: 'bad' };
+  return (
+    <section id="followup" className="card window reveal" data-title="run_supplement.py · follow-up set">
+      <div className="head">
+        <div>
+          <p className="eyebrow">Follow-up set · labelled before the run</p>
+          <h2>Numeric strings heal cleanly; a clamp still turns a heal into a <em>false fact</em>.</h2>
+          <p className="sub">
+            The v1.0 benchmark never exercises the coercion rule, because the extractor already parses numbers. This follow-up feeds {s.attempted} candidate records straight to the loop, shaped like model JSON:
+            numeric strings in typed fields, and records with two or three defects at once. The labels in <a href={blob('level-3-deep/supplement.json')}>supplement.json</a> were committed before <a href={blob('level-3-deep/run_supplement.py')}>run_supplement.py</a> existed.
+            The rows below are re-computed by the port and checked against <a href={blob('level-3-deep/results_supplement.json')}>results_supplement.json</a> at build. It is a second small designed set, not model output.
+          </p>
+        </div>
+        <span className={`pill ${s.matched === s.attempted ? 'good' : 'bad'}`}>● {s.matched} of {s.attempted} matched the label</span>
+      </div>
+      <div className="tiles" style={{ gridTemplateColumns: 'repeat(3, minmax(0, 1fr))', marginTop: 0 }}>
+        <div className="tile"><div className="num">{s.healed}/{s.attempted}</div><div className="cap">Repair rate {f3(s.repair_rate)}; Wilson 95% {f3(rr[0])} to {f3(rr[1])}</div></div>
+        <div className="tile"><div className="num">{s.silent_failures}/{s.healed}</div><div className="cap">Silent failure rate {f3(s.silent_failure_rate)}; Wilson 95% {f3(sr[0])} to {f3(sr[1])}</div></div>
+        <div className="tile"><div className="num">{s.coerce_repairs_applied}</div><div className="cap">Numeric-string coercions applied (0 in the v1.0 benchmark)</div></div>
+      </div>
+      <div style={{ overflowX: 'auto', marginTop: 16 }}>
+        <table>
+          <thead><tr><th>Record</th><th>Defects</th><th>Repairs, in order</th><th>Rounds</th><th>Status</th><th>Silent</th></tr></thead>
+          <tbody>
+            {SUPP.perRecord.map((r) => (
+              <tr key={r.id}><td className="mono">{r.id.slice(0, 3)}</td><td>{r.defects.join(' + ')}</td>
+                <td className="mono">{r.repair_log.map((l) => l.get('rule').replace('none_unrepairable', 'unrepairable')).join(' → ')}</td>
+                <td>{r.rounds}</td><td><span className={`pill ${tone[r.status]}`}>{r.status}</span></td><td>{r.silent_failure === null ? '-' : r.silent_failure ? 'yes' : 'no'}</td></tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+    </section>
+  );
+}
+
 function Classes() {
   const pc = DEEP.get('per_defect_class');
   const series = [['attempted', 'Attempted', 'var(--muted)'], ['healed', 'Healed', 'var(--primary)'], ['healed_flagged', 'Healed with a changed value', 'var(--warn)'], ['silent_failures', 'Silent failures', 'var(--bad)']];
@@ -525,6 +567,7 @@ function Reproduce() {
   const steps = [
     ['Unit tests', 'python3 -m unittest discover -s tests', `${TESTS_TOTAL} tests across ${TEST_FILES.map(([f, n]) => `${f} (${n})`).join(', ')}.`],
     ['The three runners', 'python3 level-1-learn/run_cases.py && python3 level-2-build/run_build.py && python3 level-3-deep/run_deep.py', 'Each writes deterministic output; CI re-runs them and fails on any byte difference in the results files.'],
+    ['Follow-up set', 'python3 level-3-deep/run_supplement.py', 'Numeric-string and multi-defect records, labelled before the run, written to results_supplement.json.'],
     ['Uncertainty', 'python3 level-3-deep/uncertainty.py', 'Wilson 95% intervals for each rate, written to level-3-deep/uncertainty.json.'],
     ['This dashboard', 'cd site && npm ci && npm run build', 'The build first runs src/lab.check.mjs: the JavaScript ports must reproduce all three results files exactly.'],
   ];

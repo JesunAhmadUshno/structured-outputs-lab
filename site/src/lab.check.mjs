@@ -3,7 +3,7 @@
 import assert from 'node:assert/strict';
 import fs from 'node:fs';
 import { loads, same, dumps, pyInt, pyFloat, floatRepr, F } from './py.js';
-import { runCase, callFunction, extractAndValidate, parseCorpus, evaluateDeep, attemptHeal, SCHEMAS, wilson, countTests } from './lab.js';
+import { runCase, callFunction, extractAndValidate, parseCorpus, evaluateDeep, evaluateSupplement, attemptHeal, SCHEMAS, wilson, countTests } from './lab.js';
 
 const root = new URL('../../', import.meta.url);
 const read = (p) => fs.readFileSync(new URL(p, root), 'utf8');
@@ -48,9 +48,20 @@ assert.equal(attemptHeal(twoStep, { ...SCHEMAS.invoice, properties: { ...SCHEMAS
 const noClamp = evaluateDeep(docs, evalDeep, { rules: { drop_additional_field: true, coerce_numeric_string: true, clamp_to_range: false } }).summary;
 assert.equal(noClamp.healed, 1); assert.equal(noClamp.silent_failures, 0);
 
+// Supplementary set: every record, log and the summary equal results_supplement.json.
+const supp = loads(read('level-3-deep/results_supplement.json'));
+const srun = evaluateSupplement(loads(read('level-3-deep/supplement.json')));
+assert.ok(same(new Map(Object.entries(srun.summary)), supp.get('summary')), 'supplement summary');
+supp.get('per_record').forEach((want, i) => {
+  const got = srun.perRecord[i];
+  assert.equal(got.id, want.get('id'));
+  for (const [a, b] of [['record', 'final_record'], ['repair_log', 'repair_log'], ['errors', 'final_errors'], ['status', 'status'], ['rounds', 'rounds'], ['silent_failure', 'silent_failure'], ['match', 'match']])
+    assert.ok(same(got[a], want.get(b)), `supplement ${b} ${got.id}`);
+});
+
 // Wilson intervals equal level-3-deep/uncertainty.json.
 const unc = JSON.parse(read('level-3-deep/uncertainty.json'));
-for (const k of ['extraction_accuracy', 'validation_catch_rate', 'repair_rate', 'silent_failure_rate']) {
+for (const k of ['extraction_accuracy', 'validation_catch_rate', 'repair_rate', 'silent_failure_rate', 'supplement_repair_rate', 'supplement_silent_failure_rate']) {
   const { successes, trials, wilson95 } = unc[k];
   wilson(successes, trials).forEach((v, j) => assert.ok(Math.abs(v - wilson95[j]) < 5e-5, `${k} wilson ${v}`));
 }
@@ -74,4 +85,4 @@ assert.deepEqual(['{city: Toronto}', '', '[1,]', '{"a":1,}', '{"a" 1}', '[1 2]',
 assert.equal(dumps(loads('{"a": [1, 2.0, {"b": NaN}], "c": [], "d": {}}')), '{\n  "a": [\n    1,\n    2.0,\n    {\n      "b": NaN\n    }\n  ],\n  "c": [],\n  "d": {}\n}');
 assert.ok(same(F(2), loads('2.0')) && !same(2, loads('2.0')));
 
-console.log('lab ok', { level1: `${l1.filter((r) => r.match).length}/10`, level2: `${docs.length} documents`, level3: run.summary });
+console.log('lab ok', { level1: `${l1.filter((r) => r.match).length}/10`, level2: `${docs.length} documents`, level3: run.summary, supplement: srun.summary });
