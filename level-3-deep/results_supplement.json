@@ -1,0 +1,471 @@
+{
+  "per_record": [
+    {
+      "defects": [
+        "numeric_string"
+      ],
+      "doc_type": "invoice",
+      "expected_status": "healed_clean",
+      "final_errors": [],
+      "final_record": {
+        "date": "2026-10-20",
+        "invoice_id": "INV-1101",
+        "items_count": 4,
+        "total_cad": 249.5,
+        "vendor": "Northlight Supplies"
+      },
+      "id": "r01-invoice-total-numeric-string",
+      "match": true,
+      "repair_log": [
+        {
+          "after": 249.5,
+          "before": "249.50",
+          "code": "type",
+          "doc_id": "r01-invoice-total-numeric-string",
+          "outcome": "applied",
+          "path": "$.total_cad",
+          "round": 1,
+          "rule": "coerce_numeric_string",
+          "value_changing": false
+        }
+      ],
+      "rounds": 2,
+      "silent_failure": false,
+      "status": "healed_clean"
+    },
+    {
+      "defects": [
+        "numeric_string"
+      ],
+      "doc_type": "product_listing",
+      "expected_status": "healed_clean",
+      "final_errors": [],
+      "final_record": {
+        "category": "tools",
+        "name": "Steel Hammer",
+        "price_cad": 24.99,
+        "sku": "SKU-3101",
+        "stock": 140
+      },
+      "id": "r02-product-stock-numeric-string",
+      "match": true,
+      "repair_log": [
+        {
+          "after": 140,
+          "before": "140",
+          "code": "type",
+          "doc_id": "r02-product-stock-numeric-string",
+          "outcome": "applied",
+          "path": "$.stock",
+          "round": 1,
+          "rule": "coerce_numeric_string",
+          "value_changing": false
+        }
+      ],
+      "rounds": 2,
+      "silent_failure": false,
+      "status": "healed_clean"
+    },
+    {
+      "defects": [
+        "numeric_string"
+      ],
+      "doc_type": "product_listing",
+      "expected_status": "still_rejected",
+      "final_errors": [
+        {
+          "code": "type",
+          "message": "$.stock: expected integer, got string",
+          "path": "$.stock"
+        }
+      ],
+      "final_record": {
+        "category": "office",
+        "name": "Desk Lamp",
+        "price_cad": 54.0,
+        "sku": "SKU-3102",
+        "stock": "4.5"
+      },
+      "id": "r03-product-stock-fractional-string",
+      "match": true,
+      "repair_log": [
+        {
+          "after": "4.5",
+          "before": "4.5",
+          "code": "type",
+          "doc_id": "r03-product-stock-fractional-string",
+          "outcome": "unrepairable",
+          "path": "$.stock",
+          "round": 1,
+          "rule": "none_unrepairable",
+          "value_changing": false
+        }
+      ],
+      "rounds": 1,
+      "silent_failure": null,
+      "status": "still_rejected"
+    },
+    {
+      "defects": [
+        "numeric_string"
+      ],
+      "doc_type": "meeting_note",
+      "expected_status": "healed_clean",
+      "final_errors": [],
+      "final_record": {
+        "attendees": [
+          "Ana",
+          "Ben"
+        ],
+        "date": "2026-10-21",
+        "duration_minutes": 60,
+        "meeting_id": "MTG-2101",
+        "title": "Sprint Review"
+      },
+      "id": "r04-meeting-duration-padded-string",
+      "match": true,
+      "repair_log": [
+        {
+          "after": 60,
+          "before": " 60 ",
+          "code": "type",
+          "doc_id": "r04-meeting-duration-padded-string",
+          "outcome": "applied",
+          "path": "$.duration_minutes",
+          "round": 1,
+          "rule": "coerce_numeric_string",
+          "value_changing": false
+        }
+      ],
+      "rounds": 2,
+      "silent_failure": false,
+      "status": "healed_clean"
+    },
+    {
+      "defects": [
+        "wrong_type"
+      ],
+      "doc_type": "invoice",
+      "expected_status": "still_rejected",
+      "final_errors": [
+        {
+          "code": "type",
+          "message": "$.items_count: expected integer, got boolean",
+          "path": "$.items_count"
+        }
+      ],
+      "final_record": {
+        "date": "2026-10-22",
+        "invoice_id": "INV-1102",
+        "items_count": true,
+        "total_cad": 89.99,
+        "vendor": "Paper Trail Office Co"
+      },
+      "id": "r05-invoice-items-boolean",
+      "match": true,
+      "repair_log": [
+        {
+          "after": true,
+          "before": true,
+          "code": "type",
+          "doc_id": "r05-invoice-items-boolean",
+          "outcome": "unrepairable",
+          "path": "$.items_count",
+          "round": 1,
+          "rule": "none_unrepairable",
+          "value_changing": false
+        }
+      ],
+      "rounds": 1,
+      "silent_failure": null,
+      "status": "still_rejected"
+    },
+    {
+      "defects": [
+        "numeric_string",
+        "extra_field"
+      ],
+      "doc_type": "invoice",
+      "expected_status": "healed_clean",
+      "final_errors": [],
+      "final_record": {
+        "date": "2026-10-23",
+        "invoice_id": "INV-1103",
+        "items_count": 2,
+        "total_cad": 75.25,
+        "vendor": "Paper Trail Office Co"
+      },
+      "id": "r06-invoice-numeric-string-and-extra-field",
+      "match": true,
+      "repair_log": [
+        {
+          "after": null,
+          "before": 5,
+          "code": "additional",
+          "doc_id": "r06-invoice-numeric-string-and-extra-field",
+          "outcome": "applied",
+          "path": "$.discount",
+          "round": 1,
+          "rule": "drop_additional_field",
+          "value_changing": false
+        },
+        {
+          "after": 75.25,
+          "before": "75.25",
+          "code": "type",
+          "doc_id": "r06-invoice-numeric-string-and-extra-field",
+          "outcome": "applied",
+          "path": "$.total_cad",
+          "round": 1,
+          "rule": "coerce_numeric_string",
+          "value_changing": false
+        }
+      ],
+      "rounds": 2,
+      "silent_failure": false,
+      "status": "healed_clean"
+    },
+    {
+      "defects": [
+        "extra_field",
+        "missing"
+      ],
+      "doc_type": "invoice",
+      "expected_status": "still_rejected",
+      "final_errors": [
+        {
+          "code": "required",
+          "message": "$.vendor: required field is missing",
+          "path": "$.vendor"
+        }
+      ],
+      "final_record": {
+        "date": "2026-10-24",
+        "invoice_id": "INV-1104",
+        "items_count": 3,
+        "total_cad": 150.0
+      },
+      "id": "r07-invoice-extra-field-and-missing-vendor",
+      "match": true,
+      "repair_log": [
+        {
+          "after": null,
+          "before": null,
+          "code": "required",
+          "doc_id": "r07-invoice-extra-field-and-missing-vendor",
+          "outcome": "unrepairable",
+          "path": "$.vendor",
+          "round": 1,
+          "rule": "none_unrepairable",
+          "value_changing": false
+        },
+        {
+          "after": null,
+          "before": 10,
+          "code": "additional",
+          "doc_id": "r07-invoice-extra-field-and-missing-vendor",
+          "outcome": "applied",
+          "path": "$.discount",
+          "round": 1,
+          "rule": "drop_additional_field",
+          "value_changing": false
+        },
+        {
+          "after": null,
+          "before": null,
+          "code": "required",
+          "doc_id": "r07-invoice-extra-field-and-missing-vendor",
+          "outcome": "unrepairable",
+          "path": "$.vendor",
+          "round": 2,
+          "rule": "none_unrepairable",
+          "value_changing": false
+        }
+      ],
+      "rounds": 2,
+      "silent_failure": null,
+      "status": "still_rejected"
+    },
+    {
+      "defects": [
+        "numeric_string",
+        "out_of_range",
+        "extra_field"
+      ],
+      "doc_type": "meeting_note",
+      "expected_status": "healed_flagged",
+      "final_errors": [],
+      "final_record": {
+        "attendees": [
+          "Ana",
+          "Ben",
+          "Cara"
+        ],
+        "date": "2026-10-25",
+        "duration_minutes": 480,
+        "meeting_id": "MTG-2102",
+        "title": "All Hands"
+      },
+      "id": "r08-meeting-duration-string-out-of-range-and-extra-field",
+      "match": true,
+      "repair_log": [
+        {
+          "after": null,
+          "before": "B12",
+          "code": "additional",
+          "doc_id": "r08-meeting-duration-string-out-of-range-and-extra-field",
+          "outcome": "applied",
+          "path": "$.room",
+          "round": 1,
+          "rule": "drop_additional_field",
+          "value_changing": false
+        },
+        {
+          "after": 900,
+          "before": "900",
+          "code": "type",
+          "doc_id": "r08-meeting-duration-string-out-of-range-and-extra-field",
+          "outcome": "applied",
+          "path": "$.duration_minutes",
+          "round": 1,
+          "rule": "coerce_numeric_string",
+          "value_changing": false
+        },
+        {
+          "after": 480,
+          "before": 900,
+          "code": "maximum",
+          "doc_id": "r08-meeting-duration-string-out-of-range-and-extra-field",
+          "outcome": "applied_value_changing",
+          "path": "$.duration_minutes",
+          "round": 2,
+          "rule": "clamp_to_range",
+          "value_changing": true
+        }
+      ],
+      "rounds": 3,
+      "silent_failure": true,
+      "status": "healed_flagged"
+    },
+    {
+      "defects": [
+        "numeric_string",
+        "bad_enum"
+      ],
+      "doc_type": "product_listing",
+      "expected_status": "still_rejected",
+      "final_errors": [
+        {
+          "code": "enum",
+          "message": "$.category: 'toys' is not one of ['tools', 'kitchen', 'office', 'outdoor']",
+          "path": "$.category"
+        }
+      ],
+      "final_record": {
+        "category": "toys",
+        "name": "Plush Toy",
+        "price_cad": 19.99,
+        "sku": "SKU-3103",
+        "stock": 200
+      },
+      "id": "r09-product-price-string-and-bad-category",
+      "match": true,
+      "repair_log": [
+        {
+          "after": 19.99,
+          "before": "19.99",
+          "code": "type",
+          "doc_id": "r09-product-price-string-and-bad-category",
+          "outcome": "applied",
+          "path": "$.price_cad",
+          "round": 1,
+          "rule": "coerce_numeric_string",
+          "value_changing": false
+        },
+        {
+          "after": "toys",
+          "before": "toys",
+          "code": "enum",
+          "doc_id": "r09-product-price-string-and-bad-category",
+          "outcome": "unrepairable",
+          "path": "$.category",
+          "round": 1,
+          "rule": "none_unrepairable",
+          "value_changing": false
+        },
+        {
+          "after": "toys",
+          "before": "toys",
+          "code": "enum",
+          "doc_id": "r09-product-price-string-and-bad-category",
+          "outcome": "unrepairable",
+          "path": "$.category",
+          "round": 2,
+          "rule": "none_unrepairable",
+          "value_changing": false
+        }
+      ],
+      "rounds": 2,
+      "silent_failure": null,
+      "status": "still_rejected"
+    },
+    {
+      "defects": [
+        "numeric_string",
+        "out_of_range"
+      ],
+      "doc_type": "invoice",
+      "expected_status": "healed_flagged",
+      "final_errors": [],
+      "final_record": {
+        "date": "2026-10-26",
+        "invoice_id": "INV-1105",
+        "items_count": 5,
+        "total_cad": 100000,
+        "vendor": "Harbour Print Works"
+      },
+      "id": "r10-invoice-total-string-out-of-range",
+      "match": true,
+      "repair_log": [
+        {
+          "after": 250000.0,
+          "before": "250000",
+          "code": "type",
+          "doc_id": "r10-invoice-total-string-out-of-range",
+          "outcome": "applied",
+          "path": "$.total_cad",
+          "round": 1,
+          "rule": "coerce_numeric_string",
+          "value_changing": false
+        },
+        {
+          "after": 100000,
+          "before": 250000.0,
+          "code": "maximum",
+          "doc_id": "r10-invoice-total-string-out-of-range",
+          "outcome": "applied_value_changing",
+          "path": "$.total_cad",
+          "round": 2,
+          "rule": "clamp_to_range",
+          "value_changing": true
+        }
+      ],
+      "rounds": 3,
+      "silent_failure": true,
+      "status": "healed_flagged"
+    }
+  ],
+  "summary": {
+    "attempted": 10,
+    "coerce_repairs_applied": 7,
+    "healed": 6,
+    "healed_clean": 4,
+    "healed_flagged": 2,
+    "matched": 10,
+    "repair_rate": 0.6,
+    "repairs_applied": 12,
+    "silent_failure_rate": 0.333,
+    "silent_failures": 2,
+    "still_rejected": 4
+  }
+}

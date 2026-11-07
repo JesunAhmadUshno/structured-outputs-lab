@@ -34,7 +34,9 @@ jobs:
         run: python -m unittest discover -s tests -p "test_deep*.py" -v
       - name: level 3 deep healing run
         run: python level-3-deep/run_deep.py
+      - name: level 3 supplementary set run
+        run: python level-3-deep/run_supplement.py
       - name: level 3 uncertainty report
         run: python level-3-deep/uncertainty.py
       - name: committed results reproduce byte for byte
-        run: git diff --exit-code -- level-2-build/results_build.json level-3-deep/results_deep.json level-3-deep/uncertainty.json
+        run: git diff --exit-code -- level-2-build/results_build.json level-3-deep/results_deep.json level-3-deep/results_supplement.json level-3-deep/uncertainty.json
