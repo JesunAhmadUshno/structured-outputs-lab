@@ -118,7 +118,7 @@ export default function App() {
       <Reproduce />
       <Dock />
       <footer>
-        All 16 documents are synthetic and no language model is in any measured loop. Code: Apache-2.0. Every number on this page is read from <code>level-*/</code> and <code>tests/</code> at build time;
+        All {DOCS.length} documents are synthetic and no language model is in any measured loop. Code: Apache-2.0. Every number on this page is read from <code>level-*/</code> and <code>tests/</code> at build time;
         the playgrounds run JavaScript ports of the Python code, and the build fails unless the ports reproduce the committed results exactly.
       </footer>
     </div>
@@ -484,6 +484,9 @@ function FollowUp() {
 
 function Classes() {
   const pc = DEEP.get('per_defect_class');
+  const word = (n) => ['no', 'one', 'two', 'three', 'four', 'five'][n] ?? String(n);
+  const healing = DEFECT_CLASSES.filter((c) => pc.get(c).get('healed') > 0);
+  const honest = healing.filter((c) => pc.get(c).get('silent_failures') === 0);
   const series = [['attempted', 'Attempted', 'var(--muted)'], ['healed', 'Healed', 'var(--primary)'], ['healed_flagged', 'Healed with a changed value', 'var(--warn)'], ['silent_failures', 'Silent failures', 'var(--bad)']];
   const max = Math.max(...DEFECT_CLASSES.map((c) => pc.get(c).get('attempted')));
   const W = 520, H = 290, pad = { l: 34, r: 8, t: 14, b: 58 };
@@ -492,7 +495,7 @@ function Classes() {
   return (
     <section id="classes" className="card window reveal" data-title="per_defect_class.svg">
       <p className="eyebrow">Per defect class · recorded</p>
-      <h2>Only two kinds of defect heal, and only one heals honestly.</h2>
+      <h2>Only {word(healing.length)} kinds of defect heal, and only {word(honest.length)} heals honestly.</h2>
       <p className="sub">
         From <span className="mono">per_defect_class</span> in <a href={blob('level-3-deep/results_deep.json')}>results_deep.json</a>. Missing fields are never invented and bad enum values are never guessed, so they stay rejected by design.
         Both wrong-type documents hold strings that do not parse (<code>FREE</code>, <code>many</code>), so the coercion rule is never exercised by this set.
