@@ -1,0 +1,43 @@
+{
+  "extraction_accuracy": {
+    "point": 1.0,
+    "source": "level-2-build/results_build.json",
+    "successes": 40,
+    "trials": 40,
+    "wilson95": [
+      0.9124,
+      1.0
+    ]
+  },
+  "method": "Wilson score interval, 95%, z = 1.959964",
+  "repair_rate": {
+    "point": 0.375,
+    "source": "level-3-deep/results_deep.json",
+    "successes": 3,
+    "trials": 8,
+    "wilson95": [
+      0.1368,
+      0.6943
+    ]
+  },
+  "silent_failure_rate": {
+    "point": 0.6667,
+    "source": "level-3-deep/results_deep.json",
+    "successes": 2,
+    "trials": 3,
+    "wilson95": [
+      0.2077,
+      0.9385
+    ]
+  },
+  "validation_catch_rate": {
+    "point": 1.0,
+    "source": "level-2-build/results_build.json",
+    "successes": 8,
+    "trials": 8,
+    "wilson95": [
+      0.6756,
+      1.0
+    ]
+  }
+}
