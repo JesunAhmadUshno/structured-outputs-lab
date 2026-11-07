@@ -307,6 +307,33 @@ export function evaluateDeep(docs, evaluation, opts) {
   };
 }
 
+// run_supplement.evaluate(): labelled candidate records fed straight to the loop.
+export function evaluateSupplement(labelled) {
+  let healed = 0, clean = 0, flaggedN = 0, silent = 0, matched = 0, coerce = 0, applied = 0;
+  const perRecord = labelled.map((e) => {
+    const r = attemptHeal(e.get('record'), SCHEMAS[e.get('doc_type')], e.get('id'));
+    const truthful = e.get('truthful_healed_record');
+    let isSilent = null;
+    if (r.healed) {
+      healed++; r.flagged ? flaggedN++ : clean++;
+      isSilent = !(truthful !== null && pyEq(r.record, truthful));
+      if (isSilent) silent++;
+    }
+    coerce += r.repair_log.filter((l) => l.get('rule') === 'coerce_numeric_string' && l.get('outcome') === 'applied').length;
+    applied += r.repair_log.filter((l) => l.get('outcome').startsWith('applied')).length;
+    let ok = r.status === e.get('expect_status') && r.rounds === e.get('expect_rounds');
+    if (truthful !== null && !pyEq(r.record, truthful)) ok = false;
+    if (ok) matched++;
+    return { ...r, defects: e.get('defects'), expected_status: e.get('expect_status'), silent_failure: isSilent, match: ok };
+  });
+  const attempted = labelled.length;
+  return {
+    summary: { attempted, healed, healed_clean: clean, healed_flagged: flaggedN, still_rejected: attempted - healed, repair_rate: round3(healed / attempted),
+      silent_failures: silent, silent_failure_rate: round3(healed ? silent / healed : 0), coerce_repairs_applied: coerce, repairs_applied: applied, matched },
+    perRecord,
+  };
+}
+
 // ---------------------------------------------------------------- statistics and counts
 const Z95 = 1.959963984540054;
 export function wilson(k, n, z = Z95) {
