@@ -6,10 +6,7 @@ import deepRaw from '../../level-3-deep/results_deep.json?raw';
 import evalDeepRaw from '../../level-3-deep/evaluation_deep.json?raw';
 import suppRaw from '../../level-3-deep/supplement.json?raw';
 import unc from '../../level-3-deep/uncertainty.json';
-import readme1 from '../../level-1-learn/README.md?raw';
-import readme2 from '../../level-2-build/README.md?raw';
-import readme3 from '../../level-3-deep/README.md?raw';
-import roadmap from '../../ROADMAP.md?raw';
+import report from '../../REPORT.md?raw';
 import { loads, dumps, pyRepr } from './py.js';
 import { runCase, callFunction, FUNCTIONS, extractAndValidate, parseCorpus, evaluateDeep, evaluateSupplement, wilson, countTests, RULES, MAX_ROUNDS, DEFECT_CLASSES } from './lab.js';
 
@@ -39,8 +36,9 @@ function mdList(md, heading) {
   const body = md.split(`## ${heading}`)[1]?.split('\n## ')[0] ?? '';
   return body.split(/\n(?:- |\d+\. )/).slice(1).map((t) => t.replace(/\s+/g, ' ').trim());
 }
-const LIMITS = { 'Level 1': mdList(readme1, 'Limits, stated plainly'), 'Level 2': mdList(readme2, 'Limits, stated plainly'), 'Level 3': mdList(readme3, 'Limits, stated plainly') };
-const BACKLOG = mdList(roadmap, 'v1.1 backlog');
+const LIMITS = { 'Level 1': mdList(report, 'Limits: validator and dispatcher'), 'Level 2': mdList(report, 'Limits: extraction pipeline'), 'Level 3': mdList(report, 'Limits: repair loop') };
+const BACKLOG = mdList(report, 'Open backlog');
+if (Object.values(LIMITS).some((l) => !l.length) || !BACKLOG.length) throw new Error('REPORT.md is missing a Limits or Open backlog section the dashboard quotes');
 
 const SECTIONS = [['top', 'Overview', '{}'], ['flow', 'Pipeline', '⇢'], ['learn', 'Validator', '✓'], ['build', 'Extraction', '¶'], ['deep', 'Repair loop', '↻'], ['whatif', 'What-if', '⚙'], ['followup', 'Follow-up set', '+'], ['classes', 'Defect classes', '▥'], ['limits', 'Limits', '!'], ['reproduce', 'Reproduce', '❯_']];
 
@@ -61,9 +59,8 @@ function MenuBar() {
     <div className="menubar" role="banner">
       <span className="apple" aria-hidden="true">◆</span>
       <a className="app" href="#top">Structured Outputs Lab</a>
-      <a className="m" href={blob('SPEC.md')}>Spec</a>
-      <a className="m" href={blob('level-3-deep/README.md')}>Deep write-up</a>
-      <a className="m" href={blob('docs/research-review.md')}>Research review</a>
+      <a className="m" href={blob('PROPOSAL.md')}>Proposal</a>
+      <a className="m" href={blob('REPORT.md')}>Report</a>
       <span className="spacer" />
       <span className="status"><i /> Ports parity-checked at build</span>
       <a href={REPO}>GitHub ↗</a>
@@ -538,7 +535,7 @@ function Limits() {
           <p className="eyebrow">Limits and threats to validity</p>
           <h2>What these numbers cannot tell you.</h2>
           <p className="sub">
-            Quoted from each level&apos;s own write-up, plus the gaps found in the <a href={blob('docs/research-review.md')}>research review</a>. The level grades and publicity grades in the repo are self-assigned and are not shown here as findings.
+            Quoted from the limits sections of <a href={blob('REPORT.md')}>REPORT.md</a>, plus the gaps found in its 2026-11-07 review.
           </p>
         </div>
         <div className="seg" role="group" aria-label="Level">
@@ -547,7 +544,7 @@ function Limits() {
       </div>
       <div className="grid2">
         <div>
-          <h3>{tab} README · “Limits, stated plainly”</h3>
+          <h3>{tab} · REPORT.md limits</h3>
           <ul className="quote">{LIMITS[tab].map((t) => <li key={t}>{t}</li>)}</ul>
         </div>
         <div>
@@ -558,7 +555,7 @@ function Limits() {
             <li>The truthful records were labelled by the same author who designed the defects; there is no independent labelling.</li>
             <li>The validator is a teaching subset (no <code>$ref</code>, <code>oneOf</code>, <code>format</code>). It agrees with the jsonschema package on every measured input, and differs by design on floats such as <code>60.0</code> for integers.</li>
           </ul>
-          <h3 style={{ marginTop: 16 }}>Open backlog (ROADMAP v1.1, none claimed)</h3>
+          <h3 style={{ marginTop: 16 }}>Open backlog (REPORT.md)</h3>
           <ol className="quote">{BACKLOG.map((t) => <li key={t}>{t.split(':')[0]}</li>)}</ol>
         </div>
       </div>
@@ -575,11 +572,9 @@ function Reproduce() {
     ['This dashboard', 'cd site && npm ci && npm run build', 'The build first runs src/lab.check.mjs: the JavaScript ports must reproduce all three results files exactly.'],
   ];
   const docs = [
-    ['SPEC.md', 'Spec', 'Scope and acceptance'],
-    ['level-1-learn/README.md', 'Level 1', 'Validator and dispatcher'],
-    ['level-2-build/README.md', 'Level 2', 'Extraction pipeline'],
-    ['level-3-deep/README.md', 'Level 3', 'Repair loop, limits, failure modes'],
-    ['docs/research-review.md', 'Research review', 'Graded rubric and open gaps'],
+    ['PROPOSAL.md', 'Proposal', 'Scope, prior work, designs (not locked)'],
+    ['REPORT.md', 'Report', 'Results, hypotheses scored, limits, failure modes, review'],
+    ['CHANGELOG.md', 'Changelog', 'What changed, and when'],
     ['fanout/tutorial.md', 'Tutorial', 'Course module walk-through'],
   ];
   return (

@@ -137,9 +137,6 @@ carry strings that do not parse ("FREE", "many"); the rule is
 proven by unit tests, not by this benchmark, and no number here
 claims otherwise.
 
-Level grades recorded in the batch ledger: Learn 8700, Build
-8200, Deep 7800, each of 10000.
-
 ## Honest limits
 
 - Synthetic designed sets only. Learn uses 10 hand built cases;

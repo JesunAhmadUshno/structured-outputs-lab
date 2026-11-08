@@ -1,16 +1,30 @@
 # PUBLICITY: structured-outputs-lab (P14)
 
 Publicity log under the documentation and publishing standard,
-Section 7. Every finished level produces its written fan-out set,
-each piece graded on the 1,000-point publicity rubric (accuracy 300,
-research 200, gap fit 200, clarity 150, reach format 150), ship line
-900. Drafts are prepared by the loop. Actual social posting follows
+Section 7. Every finished level produces its written fan-out set.
+Drafts are prepared by the loop. Actual social posting follows
 the standing platform rules and gates. The loop itself never posts
 to social.
 
 Fan-out set date: 2026-11-04. Project state: v1.0, Learn, Build, and
-compressed Deep done 2026-11-04, 55 tests passing. Level grades in
-the batch ledger: Learn 8700, Build 8200, Deep 7800, each of 10000.
+compressed Deep done 2026-11-04, 55 tests passing.
+
+## Fan-out files (moved from README.md, 2026-11-08)
+
+Written fan-out for v1.0 is in fanout/ (2026-11-04). The drafts are
+dated and name files by their names at the time; README.md maps the
+old names to PROPOSAL.md and REPORT.md.
+
+- fanout/blog-post.md: the full story, with the main results claim.
+- fanout/tutorial.md: course module P14-structured-outputs-lab;
+  every command in it was run and verified.
+- fanout/website-page.md: project page copy only, not published.
+- fanout/linkedin-post.md: draft, not posted, link in the first
+  comment line only.
+- fanout/paper-candidate.md: the self-healing parse reliability
+  note brief; submission is Jesun's tap, nothing submitted.
+- fanout/release-notes.md: draft notes for the existing releases
+  v0.1, v0.5, and v1.0 only.
 
 ## Channel log (2026-11-04)
 
@@ -29,48 +43,6 @@ the batch ledger: Learn 8700, Build 8200, Deep 7800, each of 10000.
 | Video | Held: engine queue, January production for lab projects per the December Compression Protocol. No video was produced in this cycle. |
 | Book chapter | Draft angle in fanout/blog-post.md and SPEC.md ("Answers In Shape"). Held: chapter draft follows the finished project set; not a published chapter. |
 | Paper candidate | Draft brief in fanout/paper-candidate.md (self-healing parse loop, repair rate and silent failure rate). Submission is Jesun's tap. Nothing submitted, no venue contacted. Tracker row stands at CANDIDATE for P14. |
-
-## Publicity grades (1,000-point rubric, ship line 900)
-
-| Piece | Accuracy /300 | Research /200 | Gap fit /200 | Clarity /150 | Reach format /150 | Total /1000 |
-| --- | --- | --- | --- | --- | --- | --- |
-| fanout/blog-post.md | 295 | 190 | 195 | 145 | 140 | 965 |
-| fanout/tutorial.md | 300 | 185 | 195 | 148 | 142 | 970 |
-| fanout/website-page.md | 295 | 180 | 190 | 148 | 145 | 958 |
-| fanout/linkedin-post.md | 290 | 175 | 190 | 145 | 140 | 940 |
-| fanout/paper-candidate.md | 295 | 195 | 195 | 140 | 130 | 955 |
-| fanout/release-notes.md | 298 | 185 | 185 | 145 | 135 | 948 |
-
-All six pieces are at or above the 900 ship line. No piece was
-shipped ungraded. Mean of the six pieces: 956 of 1000, which is
-9560 of 10000 as the overall fan-out grade.
-
-## Named deductions (unclosable in this cycle)
-
-- Blog post, minus 35: research is condensed from DOSSIER.md v1,
-  whose prior art section is brief (minus 10 research); small
-  synthetic designed sets limit how far the results travel, stated
-  in the piece (minus 10 reach, minus 5 accuracy for reader
-  interpretation risk, minus 5 gap fit, minus 5 clarity).
-- Tutorial, minus 30: research framing is thinner than the blog by
-  design, because the module teaches runs rather than the field
-  (minus 15 research); no worked example beyond the shipped sets
-  (minus 5 gap fit, minus 2 clarity, minus 8 reach).
-- Website page, minus 42: condensed research (minus 20), condensed
-  gap framing (minus 10), and the page is copy only, not a live
-  page (minus 5 reach, minus 5 accuracy, minus 2 clarity).
-- LinkedIn post, minus 60: short form compresses the research and
-  the silent failure detail (minus 25 research, minus 10 accuracy,
-  minus 10 gap fit, minus 5 clarity, minus 10 reach, because the
-  post is a held draft and carries no live link in the body by rule).
-- Paper candidate, minus 45: this is a brief, not a drafted paper
-  (minus 20 reach, minus 10 clarity); venue is classed, not named
-  (minus 5 research, minus 5 gap fit, minus 5 accuracy for the
-  synthetic-only evidence base the paper must carry).
-- Release notes, minus 52: notes summarise releases that already
-  exist, so research and gap framing are summary grade (minus 15
-  research, minus 15 gap fit); format is repo-bound (minus 15
-  reach, minus 2 accuracy, minus 5 clarity).
 
 ## Actions polish pack (2026-11-04)
 
