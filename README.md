@@ -1,77 +1,83 @@
 # structured-outputs-lab
 
-Reliable LLM applications: strict schemas, validated extraction, a self-healing parse loop.
+**Question.** Can a bounded, rule-based repair loop raise the share of
+schema-valid records without introducing false values, and how often
+does a "healed" record state something the source did not?
+
+**Headline.** On the 8 designed malformed records, the repair loop healed 3 (repair rate 0.375, Wilson 95% 0.137 to 0.694), and 2 of those 3 were flagged clamps that changed a stated value (silent failure rate 0.667, 95% 0.208 to 0.939); no language-model output was measured.
+
+**Field.** ML and AI research. **Job family.** Applied AI engineering
+(reliable LLM applications: strict schemas, validated extraction).
+
+**Verdict.** Functional, not pre-registered. Tests pass in CI on Python
+3.11 and 3.12, the system under study (validator, extraction pipeline,
+repair loop) runs end to end in one command, and CI fails unless every
+committed results file regenerates byte for byte. No plan was locked
+before the results existed, so the repo is capped at Functional until a
+confirmatory cycle runs under a tagged proposal. The old tags v0.1,
+v0.5 and v1.0 come from the earlier Learn, Build, Deep ladder and do
+not mean "v1.0 Released" under the current standard.
 
 Live dashboard: https://jesunahmadushno.github.io/structured-outputs-lab/
 (source in site/; in-browser ports of the validator, pipeline and repair
-loop, rebuilt from the committed results and checked against them on
-every build.)
+loop, checked against the committed results on every build.)
 
-Status: LEARN DONE, BUILD DONE, and DEEP DONE 2026-11-04
-(ROADMAP-V3-BATCH, Sprint 1, compressed Deep). v1.0.
-Level 1 code runs with 16 passing unit tests and one measured case
-run (10 of 10 cases matched expectation, below). Level 2 code runs
-with 18 Build unit tests and one measured pipeline run (16 of 16
-documents matched expectation, below). Level 3 code runs with 21
-Deep unit tests (55 total) and one measured loop run over the 8
-Build rejections (8 of 8 matched the labelled outcome, repair rate
-0.375, silent failure rate 0.667, below). The rest of the v2 Deep
-scope is the v1.1 backlog in ROADMAP.md. The Wave 0 scaffold
-claim is superseded by this line.
-Project: P14. Fleet node: BlackBoxV3. Wave: Wave 2.
+## Reproduce
 
-## Start here
+```text
+python level-1-learn/run_cases.py
+python level-2-build/run_build.py
+python level-3-deep/run_deep.py
+python level-3-deep/run_supplement.py
+python level-3-deep/uncertainty.py
+git diff --exit-code -- level-2-build/results_build.json level-3-deep/results_deep.json level-3-deep/results_supplement.json level-3-deep/uncertainty.json
+python -m unittest discover -s tests -p "test_*.py" -v
+```
 
-1. Read SPEC.md for scope and acceptance criteria.
-2. Read DOSSIER.md for the past, present, and future of this problem (v1).
-3. Read NOVELTY.md for the proposed novelty (DRAFT, pending the Jev claim_check gate).
-4. Start at level-1-learn/README.md, then level-2-build, then level-3-deep.
+Python standard library only. The differential test also uses the
+reference validator (`pip install jsonschema==4.26.0`) and is skipped
+where it is absent. CPU only, a few seconds in total.
 
-## Level map
+## Lifecycle
 
-- Level 1, Learn: the core idea, built small and clean, with a teaching path.
-- Level 2, Build: a real working system other people can run.
-- Level 3, Deep: benchmarks, optimization, evaluation, hard cases.
+- Question: DONE 2026-11-04
+- Proposal: NOT PRE-REGISTERED 2026-11-08
+- Baseline: DONE 2026-11-04
+- Build: DONE 2026-11-04
+- Evaluate: OPEN
+- Report: DRAFT 2026-11-08
+- Review: OPEN
+- Release: OPEN
 
-## Benchmarks
+Evaluate stays open because the ML and AI research profile is not met:
+no model baseline and no registered ablation (REPORT.md, Hypotheses
+scored).
 
-| Test | Result |
-| --- | --- |
-| Level 1 case run, 10 model-style function calls against strict schemas (method: level-1-learn/README.md), 2026-11-04 | 10 of 10 cases matched expectation: 4 valid calls dispatched (get_weather 2, create_calendar_event 1, score_keywords 1), 6 invalid calls rejected before dispatch, each at its designed error path ($.unit, $.date twice, $.room, $.keywords[1], $). Unit tests: 16 run, 16 passed. |
-| Level 2 pipeline run, 16 synthetic documents in 3 types against strict schemas (method: level-2-build/README.md), 2026-11-04 | 16 of 16 documents matched expectation: 8 accepted, 8 rejected. Extraction accuracy 1.000 (40 of 40 fields on expected-accept documents), validation catch rate 1.000 (8 of 8 malformed documents rejected at their designed first error paths), 0 false accepts. Unit tests: 18 Build run, 18 passed; 34 total with Learn. |
-| Level 3 healing run, the 8 Build rejections against a labelled expected healed outcome set (method: level-3-deep/README.md), 2026-11-04 | 8 of 8 documents matched the labelled outcome: 3 healed, 5 still rejected. Repair rate 0.375 (3 of 8: 1 clean heal from dropping an additional field, 2 flagged value-changing clamps), silent failure rate 0.667 (2 of 3 healed are clamps whose healed values differ from the values the documents state), 0 of 8 Build-accepted records altered. Unit tests: 21 Deep run, 21 passed; 55 total with Learn and Build. |
+## Layout
 
-Follow-up, 2026-11-07 (does not change the v1.0 rows above):
+The code and its evidence stay in the three stage folders, because the
+tests, the CI reproduce check and the dashboard read them there
+(docs/decisions/0001).
 
-| Test | Result |
-| --- | --- |
-| Uncertainty on every rate (level-3-deep/uncertainty.py, writes uncertainty.json) | Wilson 95% intervals: repair rate 3 of 8, 0.137 to 0.694; silent failure rate 2 of 3, 0.208 to 0.939; validation catch rate 8 of 8, 0.676 to 1.000. The v1.0 rates rest on very small counts and should be read with these intervals. |
-| Supplementary set, 10 candidate records fed straight to the loop: numeric strings in typed fields and multi-defect records, labelled in supplement.json and committed before the runner existed (ROADMAP v1.1 items 1 and 2) | 10 of 10 records matched the label. Healed 6 (4 clean, 2 flagged), still rejected 4. Repair rate 0.600 (Wilson 95% 0.313 to 0.832), silent failure rate 0.333 (2 of 6: the two records where a coerced value was then clamped). The coercion rule applied 7 times; it applied 0 times in the v1.0 benchmark, because the Level 2 extractor already parses numeric tokens. A fractional string ("4.5") never became an integer, and a boolean was never coerced. |
-| Differential check of the Level 1 subset validator against the jsonschema package (Draft 2020-12), tests/test_learn_differential.py | Agrees on all 9 parseable Level 1 case arguments and all 16 Level 2 candidate records. One deliberate, pinned disagreement: the subset rejects 60.0 for an integer field (Python types), the standard accepts it. |
+| Path | Role | What it holds |
+| --- | --- | --- |
+| PROPOSAL.md | proposal | The plan as it was written, not locked: scope, prior work, proposed novelty, the pipeline and repair-loop designs |
+| REPORT.md | report | Current state, hypotheses scored with misses, results, limits, failure modes, the 2026-11-07 review, open backlog |
+| level-1-learn/ | code, evidence | Subset JSON Schema validator, function-calling dispatcher, the 10 labelled cases and their runner |
+| level-2-build/ | code, evidence, results | Synthetic corpus, extractors and schemas, labelled evaluation set, runner, results_build.json |
+| level-3-deep/ | code, evidence, results | Repair loop, labelled sets (evaluation_deep.json, supplement.json), runners, results_deep.json, results_supplement.json, uncertainty.json |
+| tests/ | tests | Unit tests per stage, the jsonschema differential test, and the layout test |
+| docs/decisions/ | decisions | Records of hard-to-reverse choices |
+| site/ | dashboard | The live dashboard, built from the files above |
+| fanout/, PUBLICITY.md | outreach | Dated 2026-11-04 drafts (nothing posted) and the channel log |
+| CHANGELOG.md, CITATION.cff, SECURITY.md, LICENSE | release | History, citation, how to report a vulnerability, licence |
 
-Unit tests after the follow-up: 71 run, 71 passed (55 from v1.0, plus 6
-uncertainty, 6 supplementary-set and 4 differential tests). The
-research review is in docs/research-review.md.
-
-## Fan-out
-
-Written fan-out for v1.0 is in fanout/ (2026-11-04), graded in
-PUBLICITY.md:
-
-- fanout/blog-post.md: the full story, with the main results claim.
-- fanout/tutorial.md: course module P14-structured-outputs-lab;
-  every command in it was run and verified.
-- fanout/website-page.md: project page copy only, not published.
-- fanout/linkedin-post.md: draft, not posted, link in the first
-  comment line only.
-- fanout/paper-candidate.md: the self-healing parse reliability
-  note brief; submission is Jesun's tap, nothing submitted.
-- fanout/release-notes.md: draft notes for the existing releases
-  v0.1, v0.5, and v1.0 only.
-
-## Novelty
-
-PROPOSED. See NOVELTY.md. The novelty text is a draft until the Jev claim_check gate passes on it.
+There is no separate experiments/ or results/ folder: each labelled
+input set and its scored results sit beside the runner that produces
+them. Older files and commit messages name files that moved here on
+2026-11-08: SPEC.md, NOVELTY.md, DOSSIER.md, BUILD-SPEC.md and
+DEEP-SPEC.md are now in PROPOSAL.md; the level READMEs, ROADMAP.md and
+docs/research-review.md are now in REPORT.md.
 
 ## License
 

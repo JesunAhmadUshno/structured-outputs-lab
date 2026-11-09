@@ -66,10 +66,10 @@ for (const k of ['extraction_accuracy', 'validation_catch_rate', 'repair_rate', 
   wilson(successes, trials).forEach((v, j) => assert.ok(Math.abs(v - wilson95[j]) < 5e-5, `${k} wilson ${v}`));
 }
 
-// Test counts: the README states 16 + 18 + 21 = 55 for the three level suites.
+// Test counts: REPORT.md states 16 + 18 + 21 = 55 for the three level suites.
 const n = (f) => countTests(read(`tests/${f}`));
 assert.deepEqual([n('test_learn_structured.py'), n('test_build_pipeline.py'), n('test_deep_healing.py')], [16, 18, 21]);
-assert.match(read('README.md'), /Deep unit tests \(55 total\)/);
+assert.match(read('REPORT.md'), /21 Deep unit tests pass, 55 tests total/);
 
 // Python parsing edge cases, as printed by CPython 3.12.3.
 assert.deepEqual(['1_000', '0_1', '+3', '-0', ' 5 '].map(pyInt), [1000, 1, 3, 0, 5]);
