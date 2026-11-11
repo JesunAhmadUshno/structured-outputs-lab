@@ -9,8 +9,11 @@ REQUIRED = ["README.md", "PROPOSAL.md", "REPORT.md", "CHANGELOG.md", "CITATION.c
             "level-1-learn/cases.json", "level-2-build/results_build.json", "level-3-deep/results_deep.json",
             "level-3-deep/results_supplement.json", "level-3-deep/uncertainty.json"]
 # Grades are internal (portfolio METHOD section 5). Patterns cover the forms this repo used to publish.
-GRADE = re.compile(r"of 10,?000\b|/ ?10,?000\b|/1000\b|\bGrade:|\b[Ll]evel grades?\b|[Pp]ublicity grades?\b"
+GRADE = re.compile(r"of 10,?000\b|/ ?10,?000\b|/10{3}\b|\bGrade:|\b[Ll]evel grades?\b|[Pp]ublicity grades?\b"
                    r"|\b\d{3,4} of 1,?000\b|hiring value \d of \d|\([A-D][+-]?( to [A-D][+-]?)?\)$", re.M)
+# Made-up values in the shapes old grades took. These lines are exempt from the scan below.
+FIXTURES = ["Level grade 1234 of 10000.", "graded 1111 of 10000", "| 1 |\nMean: 123 of 1000",  # grade-fixture
+            "## 9. Section (C to D)", "Grade: 1,111 of 10,000", "hiring value 1 of 9"]  # grade-fixture
 README_ABSTRACT = ["**Question.**", "**Headline.**", "**Field.**", "**Job family.**", "**Verdict.**",
                    "## Reproduce", "## Lifecycle", "## Layout"]
 
@@ -19,7 +22,7 @@ def public_text_files():
     for base, dirs, files in os.walk(ROOT):
         dirs[:] = [d for d in dirs if d not in {".git", "node_modules", "dist"}]
         for name in files:
-            if name.endswith((".md", ".cff", ".jsx", ".html")):
+            if name.endswith((".md", ".cff", ".jsx", ".html", ".py", ".json", ".yml", ".yaml", ".toml")):
                 yield os.path.join(base, name)
 
 
@@ -37,13 +40,14 @@ class Layout(unittest.TestCase):
     def test_no_public_grade(self):
         hits = []
         for path in public_text_files():
-            for m in GRADE.finditer(open(path, encoding="utf-8").read()):
+            lines = open(path, encoding="utf-8").read().splitlines()
+            text = "\n".join(line for line in lines if not line.endswith("# grade-fixture"))
+            for m in GRADE.finditer(text):
                 hits.append(f"{os.path.relpath(path, ROOT)}: {m.group(0)}")
         self.assertEqual(hits, [], "grades are internal; found: " + "; ".join(hits))
 
     def test_grade_pattern_catches_the_old_forms(self):
-        for old in ["Level grade 8700 of 10000.", "graded 9560 of 10000", "| 965 |\nMean: 956 of 1000",
-                    "## 6. Reproducibility (A- to A)", "Grade: 3,400 of 10,000", "hiring value 3 of 5"]:
+        for old in FIXTURES:
             self.assertIsNotNone(GRADE.search(old), old)
 
 
