@@ -100,7 +100,7 @@ function Range({ label, value, min, max, step, onChange, show: shown }) {
 export default function App() {
   useReveal();
   return (
-    <div className="wrap">
+    <div className="wrap"><a className="skip" href="#top">Skip to content</a>
       <MenuBar />
       <div className="glow" aria-hidden="true" />
       <Hero />
@@ -117,7 +117,7 @@ export default function App() {
       <footer>
         All {DOCS.length} documents are synthetic and no language model is in any measured loop. Code: Apache-2.0. Every number on this page is read from <code>level-*/</code> and <code>tests/</code> at build time;
         the playgrounds run JavaScript ports of the Python code, and the build fails unless the ports reproduce the committed results exactly.
-      </footer>
+      <nav className="support" aria-label="Support this work"><a href="https://github.com/sponsors/JesunAhmadUshno">Sponsor this work</a><a href="https://github.com/sponsors/JesunAhmadUshno">Donate</a><a href="https://buymeacoffee.com/jesun">Buy Me a Coffee</a><a href="https://calendly.com/jesunahmadushno/30min">Work with me</a></nav></footer>
     </div>
   );
 }
